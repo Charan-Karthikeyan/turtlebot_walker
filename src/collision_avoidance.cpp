@@ -38,13 +38,13 @@
 #include <iterator>
 #include <algorithm>
 
-#include "ros/ros.h"
+//#include "ros/ros.h"
 #include "sensor_msgs/LaserScan.h"
 #include "geometry_msgs/Twist.h"
-#include "../include/turtlebot_walker/collison_avoidance.hpp"
+#include "../include/turtlebot_walker/collision_avoidance.hpp"
 
 /**
- * @brief Contructor to initialize the values of the class
+ * @brief Constructor to initialize the values of the class
  * @param None.
  * @return None.
  */
@@ -72,8 +72,8 @@ void collision_avoidance::initializePubTwist() {
  * @return None.
  */
 void collision_avoidance::initializeSubScan() {
-  //Initialize the subciber to get the values from the Laser scan.
-  sub = n.subscirbe("scan",100,&collison_avoidance::scanCallOut,this);
+  //Initialize the subsciber to get the values from the Laser scan.
+  sub = n.subscribe("scan",100,&collision_avoidance::scanCallOut,this);
   //Stream the updated message.
   ROS_INFO_STREAM("Started the Subscriber");
 }
@@ -83,7 +83,7 @@ void collision_avoidance::initializeSubScan() {
  * @param scanVals - The scan values from the laser scan.
  * @return None.
  */
-void scanCallOut(const sensor_msgs::LaserScan::ConstPtr &scanVals) {
+void collision_avoidance::scanCallOut(const sensor_msgs::LaserScan::ConstPtr &scanVals) {
   obstacleStatus = false;
   minDist = *(scanVals->ranges.begin());
   // To get the nearest value of the obstacle by iterating through the values.
@@ -99,14 +99,14 @@ void scanCallOut(const sensor_msgs::LaserScan::ConstPtr &scanVals) {
   } else {
     ROS_INFO_STREAM("The Minimum Distance to an Obstacle is : \t" << minDist);
   }
-  // Collison distance check for the robot.
+  // Collision distance check for the robot.
   if (minDist < scanVals->range_min + 0.5 && !std::isnan(minDist)) {
     obstacleStatus = true;
     ROS_WARN_STREAM("Object in path");
     ROS_INFO_STREAM("Object in path. Rerouting ...");
   }
   //Function to run the robot based on the object point.
-  moveBot(objectStatus);
+  moveBot(obstacleStatus);
 
 }
 /**
@@ -114,11 +114,11 @@ void scanCallOut(const sensor_msgs::LaserScan::ConstPtr &scanVals) {
  * @param obstacleStatus - Collison status with respect to the robot.
  * @return None.
  */
-void collison_avoidance::moveBot(bool obstcaleStatus) {
+void collision_avoidance::moveBot(bool obstcaleStatus) {
   if (obstcaleStatus) {
     //Angular movement of the robot.
     twist.linear.x = 0;
-    twsit.angular.z = 1.0;
+    twist.angular.z = 1.0;
   } else {
     //Move in the forward direction.
     twist.linear.x = 0.5;
@@ -135,5 +135,5 @@ void collison_avoidance::moveBot(bool obstcaleStatus) {
 collision_avoidance::~collision_avoidance() {
 
   }
-}
+
 
