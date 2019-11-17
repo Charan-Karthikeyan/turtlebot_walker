@@ -69,7 +69,7 @@ class collision_avoidance{
    * @param None.
    * @return None.
    */
-  ~collision_avoidance();n
+  virtual ~collision_avoidance();n
 
   /**
    * @brief Initialize function for the twist publisher.
@@ -101,8 +101,5 @@ class collision_avoidance{
 
 
 };
-
-
-
 
 #endif /* INCLUDE_TURTLEBOT_WALKER_COLLISION_AVOIDANCE_HPP_ */
