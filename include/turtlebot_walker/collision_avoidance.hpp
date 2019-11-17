@@ -69,7 +69,7 @@ class collision_avoidance{
    * @param None.
    * @return None.
    */
-  virtual ~collision_avoidance();n
+  virtual ~collision_avoidance();
 
   /**
    * @brief Initialize function for the twist publisher.
