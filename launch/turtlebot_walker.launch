@@ -1,0 +1,18 @@
+<launch>
+  <arg name="bagrecord" default = "true"/>
+  <include
+    file = "$(find turtlebot_gazebo)/launch/turtlebot_world.launch">
+  </include>
+  <node pkg="turtlebot_walker" 
+	type="turtlebot_walker" 
+	name="collision_avoidance"
+	output = "screen">
+  </node>
+  <node pkg="rosbag" 
+	type="record" 
+	name="turtlebot_walker" 
+	args="record -o /$(find simple_roomba)/rosbag/rosbag.bag -a -x /camera/(.*) --duration=30" 
+	if="$(arg bagrecord)">
+  </node>
+
+</launch>
