@@ -38,7 +38,7 @@
 #include "ros/ros.h"
 #include "sensor_msgs/LaserScan.h"
 #include "geometry_msgs/Twist.h"
-#include "../include/turtlebot_walker/collison_avoidance.hpp"
+#include "../include/turtlebot_walker/collision_avoidance.hpp"
 
 /**
  * @brief Main block to run the nodes.
@@ -50,7 +50,7 @@
 int main(int argc, char **argv) {
   ros::init(argc,argv,"collision_avoidance");
   collision_avoidance move;
-  move.nodeinit(argc,argv);
+//  move.nodeinit(argc,argv);
   move.initializeSubScan();
   move.initializePubTwist();
   ros::spin();
