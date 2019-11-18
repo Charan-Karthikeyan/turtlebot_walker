@@ -2,6 +2,8 @@
   <arg name="bagrecord" default = "true"/>
   <include
     file = "$(find turtlebot_gazebo)/launch/turtlebot_world.launch">
+    <arg name="world_file" value="$(find turtlebot_walker)/launch/turtlebot_custom_world.world"/>
+
   </include>
   <node pkg="turtlebot_walker" 
 	type="turtlebot_walker" 
