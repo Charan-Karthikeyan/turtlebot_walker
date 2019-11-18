@@ -37,8 +37,7 @@
 #include <vector>
 #include <iterator>
 #include <algorithm>
-
-//#include "ros/ros.h"
+#include "ros/ros.h"
 #include "sensor_msgs/LaserScan.h"
 #include "geometry_msgs/Twist.h"
 #include "../include/turtlebot_walker/collision_avoidance.hpp"
@@ -49,9 +48,9 @@
  * @return None.
  */
 collision_avoidance::collision_avoidance() {
-  //Initialize the obstacle status value.
+  // Initialize the obstacle status value.
   obstacleStatus = false;
-  //Initialize the min distance value.
+  // Initialize the min distance value.
   minDist = 0.0;
 }
 /**
@@ -60,10 +59,10 @@ collision_avoidance::collision_avoidance() {
  * @return None.
  */
 void collision_avoidance::initializePubTwist() {
-  //Initialize the publisher to publish the twist messages
+  // Initialize the publisher to publish the twist messages
   pub = n.advertise<geometry_msgs::Twist>(
       "/mobile_base/commands/velocity", 100);
-  //Stream the update message
+  // Stream the update message
   ROS_INFO_STREAM("Started the Publisher");
 }
 /**
@@ -72,9 +71,9 @@ void collision_avoidance::initializePubTwist() {
  * @return None.
  */
 void collision_avoidance::initializeSubScan() {
-  //Initialize the subsciber to get the values from the Laser scan.
-  sub = n.subscribe("scan",100,&collision_avoidance::scanCallOut,this);
-  //Stream the updated message.
+  // Initialize the subscriber to get the values from the Laser scan.
+  sub = n.subscribe("scan", 100, &collision_avoidance::scanCallOut, this);
+  // Stream the updated message.
   ROS_INFO_STREAM("Started the Subscriber");
 }
 /**
@@ -83,17 +82,18 @@ void collision_avoidance::initializeSubScan() {
  * @param scanVals - The scan values from the laser scan.
  * @return None.
  */
-void collision_avoidance::scanCallOut(const sensor_msgs::LaserScan::ConstPtr &scanVals) {
+void collision_avoidance::scanCallOut(
+           const sensor_msgs::LaserScan::ConstPtr &scanVals) {
   obstacleStatus = false;
   minDist = *(scanVals->ranges.begin());
   // To get the nearest value of the obstacle by iterating through the values.
-  for(auto i :scanVals->ranges) {
-    if(i < minDist && !std::isnan(i)) {
-      //Set the smallest value to the minDist.
+  for (auto i : scanVals->ranges) {
+    if (i < minDist && !std::isnan(i)) {
+      // Set the smallest value to the minDist.
       minDist = i;
     }
   }
-  //Check if the obstacle not in the search space.
+  // Check if the obstacle not in the search space.
   if (std::isnan(minDist)) {
     ROS_INFO_STREAM("No Obstacle in the current space");
   } else {
@@ -105,26 +105,25 @@ void collision_avoidance::scanCallOut(const sensor_msgs::LaserScan::ConstPtr &sc
     ROS_WARN_STREAM("Object in path");
     ROS_INFO_STREAM("Object in path. Rerouting ...");
   }
-  //Function to run the robot based on the object point.
+  // Function to run the robot based on the object point.
   moveBot(obstacleStatus);
-
 }
 /**
  * @brief Function to move the robot according to the object status.
- * @param obstacleStatus - Collison status with respect to the robot.
+ * @param obstacleStatus - Collision status with respect to the robot.
  * @return None.
  */
 void collision_avoidance::moveBot(bool obstcaleStatus) {
   if (obstcaleStatus) {
-    //Angular movement of the robot.
+    // Angular movement of the robot.
     twist.linear.x = 0;
     twist.angular.z = 1.0;
   } else {
-    //Move in the forward direction.
+    // Move in the forward direction.
     twist.linear.x = 0.5;
     twist.angular.z = 0.0;
   }
-  //publish the values to the robot to follow.
+  // Publish the values to the robot to follow.
   pub.publish(twist);
 }
 /**
@@ -133,7 +132,6 @@ void collision_avoidance::moveBot(bool obstcaleStatus) {
  * @return None.
  */
 collision_avoidance::~collision_avoidance() {
-
   }
 
 
