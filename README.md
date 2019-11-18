@@ -1,3 +1,5 @@
+[![GitHub](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/Charan-Karthikeyan/turtlebot_walker/blob/master/LICENSE)
+
 # Turtlebot_Walker
 
 ## Overview of the Project
