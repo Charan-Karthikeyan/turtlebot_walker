@@ -48,7 +48,7 @@
  */
 
 int main(int argc, char **argv) {
-  ros::init(argc,argv,"collision_avoidance");
+  ros::init(argc, argv, "collision_avoidance");
   collision_avoidance move;
 //  move.nodeinit(argc,argv);
   move.initializeSubScan();
