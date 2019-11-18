@@ -49,7 +49,7 @@ class collision_avoidance{
   ros::NodeHandle n;
   // ROS subscriber for scan
   ros::Subscriber sub;
-  //ROS publisher to the twist function
+  // ROS publisher to the twist function
   ros::Publisher pub;
   // Boolean operator for the obstacle occupancy
   bool obstacleStatus;
@@ -98,8 +98,5 @@ class collision_avoidance{
    * @return None.
    */
   void scanCallOut(const sensor_msgs::LaserScan::ConstPtr &scanVals);
-
-
 };
-
-#endif /* INCLUDE_TURTLEBOT_WALKER_COLLISION_AVOIDANCE_HPP_ */
+#endif  // INCLUDE_TURTLEBOT_WALKER_COLLISION_AVOIDANCE_HPP_ */
